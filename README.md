@@ -1,1 +1,1 @@
-# slugify-tool
+# Slugify Tool

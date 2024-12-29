@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slugify Tool</title>
+    <link rel="icon" href="/favicon.png" type="image/x-icon" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+      }
+      h1 {
+        color: #4caf50;
+        margin-bottom: 10px;
+      }
+      p {
+        color: #333;
+        margin-bottom: 10px;
+      }
+      label {
+        font-weight: 600;
+      }
+      input {
+        padding: 5px;
+        margin: 5px 0;
+        width: 300px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .result {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+        font-weight: 700;
+      }
+      .button-container {
+        margin-top: 20px;
+      }
+      .copy-button {
+        background-color: #008cba;
+      }
+      .copy-button:hover {
+        background-color: #007bb5;
+      }
+      footer {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 30px;
+        text-align: center;
+        font-size: 14px;
+        color: #888;
+      }
+      a {
+        color: #4caf50;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Slugify Tool</h1>
+    <p>Enter text to generate a URL-friendly slug:</p>
+
+    <form id="slugForm">
+      <label for="inputText">Enter text:</label>
+      <input type="text" id="inputText" placeholder="Enter your text here..." />
+      <br /><br />
+
+      <button type="button" onclick="slugifyText()">Generate Slug</button>
+      <button type="button" onclick="resetForm()">Clear</button>
+    </form>
+
+    <div class="result" id="slugResult"></div>
+
+    <div class="button-container">
+      <button
+        class="copy-button"
+        id="copyButton"
+        onclick="copyToClipboard()"
+        style="display: none"
+      >
+        Copy Slug
+      </button>
+    </div>
+
+    <footer>
+      <p>
+        &copy; <span id="currentYear"></span>
+        <a href="https://github.com/compound-x" target="_blank">Compound X</a>.
+      </p>
+    </footer>
+
+    <script>
+      document.getElementById("currentYear").innerText =
+        new Date().getFullYear();
+
+      function slugifyText() {
+        const inputText = document.getElementById("inputText").value;
+
+        if (!inputText.trim()) {
+          alert("Please enter some text.");
+          return;
+        }
+
+        const slug = inputText
+          .toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-");
+
+        document.getElementById("slugResult").innerText = `Slug: ${slug}`;
+        document.getElementById("copyButton").style.display = "inline-block";
+      }
+
+      function resetForm() {
+        document.getElementById("slugForm").reset();
+        document.getElementById("slugResult").innerText = "";
+        document.getElementById("copyButton").style.display = "none";
+      }
+
+      function copyToClipboard() {
+        const slug = document
+          .getElementById("slugResult")
+          .innerText.replace("Slug: ", "");
+
+        if (!slug) {
+          alert("No slug to copy!");
+          return;
+        }
+
+        const tempInput = document.createElement("input");
+        tempInput.value = slug;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        alert("Slug copied to clipboard!");
+      }
+    </script>
+  </body>
+</html>
